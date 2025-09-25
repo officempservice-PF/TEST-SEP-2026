@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Test Elektryka – 30 pytań | PF-Smart Energy & AI Safety</title>
+<meta name="description" content="Profesjonalny test wiedzy elektrycznej (30 pytań) z natychmiastową oceną. Wersja firmowa PF-Smart Energy & AI Safety." />
+<meta name="theme-color" content="#0b1220" />
+<style>
+  :root{--bg:#0b1220;--card:#121a2b;--ink:#e6eefc;--muted:#a8b3c7;--accent:#4da3ff;--accent2:#20c997;--shadow:0 8px 24px rgba(0,0,0,.35);--radius:16px}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,'Helvetica Neue',Arial,sans-serif;background:radial-gradient(1200px 700px at 10% -10%,#16223a 0%,transparent 60%),radial-gradient(1000px 600px at 110% 0%,#0e1a30 0%,transparent 60%),var(--bg);color:var(--ink);min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .app{width:min(100%,1060px);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.0));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.1);position:sticky;top:0;backdrop-filter:blur(8px);z-index:10}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:36px;height:36px;border-radius:9px;background:conic-gradient(from 200deg,#4da3ff,#20c997,#7c4dff,#4da3ff)}
+  .brand h1{font-size:16px;margin:0}
+  .brand small{color:var(--muted)}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{background:linear-gradient(135deg,var(--accent),#7c4dff);color:white;border:none;padding:10px 12px;border-radius:10px;font-weight:700;cursor:pointer;box-shadow:var(--shadow)}
+  .btn.secondary{background:#0e1730;color:var(--ink);border:1px solid rgba(255,255,255,.2);font-weight:600}
+  .pill{padding:6px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);color:var(--muted);font-size:12px}
+  main{padding:18px 16px 24px}
+  .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}
+  @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .qhead{display:flex;gap:12px;align-items:flex-start;margin-bottom:12px}
+  .qno{flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:grid;place-content:center;font-weight:800;color:#0b1220;background:linear-gradient(135deg,#4da3ff,#20c997)}
+  .qtext{font-size:18px;line-height:1.3}
+  .answers{display:grid;gap:10px;margin-top:12px}
+  .ans{background:#0e1730;border:1px solid rgba(255,255,255,.06);padding:12px 14px;border-radius:12px;cursor:pointer;transition:transform .05s ease,border-color .2s ease,background .2s ease}
+  .ans:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.16)}
+  .ans.correct{border-color:rgba(32,201,151,.7);background:rgba(32,201,151,.08)}
+  .ans.wrong{border-color:#ff5d6c;background:rgba(255,93,108,.08)}
+  .explain{color:var(--muted);margin-top:10px;font-size:14px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .bar{width:240px;height:8px;border-radius:6px;background:#0f1730;overflow:hidden;border:1px solid rgba(255,255,255,.08)}
+  .fill{height:100%;background:linear-gradient(90deg,var(--accent),#7c4dff);width:0%}
+  .footer{padding:14px 16px;color:var(--muted);font-size:12px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;background:rgba(255,255,255,.02)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>PF-Smart Energy & AI Safety</h1>
+        <small>Test Elektryka – 30 pytań (PL)</small>
+      </div>
+    </div>
+    <div class="toolbar">
+      <button class="btn secondary" id="shuffleBtn">🔀 Losuj pytania</button>
+      <button class="btn secondary" id="exportBtn">⬇️ Eksport wyniku</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <div class="qhead">
+          <div class="qno" id="qno">1</div>
+          <div class="qtext" id="qtext">...</div>
+        </div>
+        <div class="answers" id="answers"></div>
+        <div class="explain" id="explain" style="display:none"></div>
+
+        <div class="row">
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+            <span class="pill" id="counter">Pytanie 1/30</span>
+            <div class="bar"><div class="fill" id="bar"></div></div>
+            <span class="pill" id="scoreLabel">0 pkt</span>
+          </div>
+          <div>
+            <button class="btn" id="nextBtn" disabled>Następne ➜</button>
+            <button class="btn secondary" id="restartBtn">Restart</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card">
+        <strong>Noty prawne &amp; prawa autorskie</strong>
+        <div id="legalBlock" style="margin-top:8px"></div>
+      </aside>
+    </div>
+  </main>
+
+  <div class="footer">
+    <div id="copyright"></div>
+    <div>Wersja 1.0 • Build static</div>
+  </div>
+</div>
+
+<script>
+const COMPANY_NAME = "PF-Smart Energy & AI Safety";
+const PASS = 24;
+
+const QUESTIONS = [
+  { "q":"Jakim kolorem oznacza się przewód ochronny (PE) w instalacjach nN?",
+    "a":[{"t":"Niebieskim","ok":false,"e":"Niebieski jest zarezerwowany dla przewodu neutralnego (N)."},
+         {"t":"Żółto-zielonym","ok":true,"e":"PE zawsze żółto-zielony na całej długości izolacji."},
+         {"t":"Czarnym","ok":false,"e":"Czarny to zwykle faza L w instalacjach sterowniczych."}]},
+  { "q":"Jaki symbol ma układ sieci z rozdziałem PEN na PE i N w złączu budynku?",
+    "a":[{"t":"TT","ok":false,"e":"W TT punkt neutralny jest uziemiony niezależnie od uziomu odbiorcy."},
+         {"t":"TN-S","ok":false,"e":"TN-S ma oddzielne PE i N od źródła, bez PEN."},
+         {"t":"TN-C-S","ok":true,"e":"TN-C-S: do złącza przewód PEN, dalej rozdział na PE i N."}]},
+  { "q":"Wyłącznik różnicowoprądowy (RCD) o czułości 30 mA służy do:",
+    "a":[{"t":"Ochrony przed przeciążeniem przewodów","ok":false,"e":"Za przeciążenia odpowiadają zabezpieczenia nadprądowe (MCB)."},
+         {"t":"Ochrony przeciwporażeniowej uzupełniającej","ok":true,"e":"RCD 30 mA to standard ochrony uzupełniającej dla obwodów odbiorczych."},
+         {"t":"Kompensacji mocy biernej","ok":false,"e":"Kompensację realizują baterie kondensatorów, nie RCD."}]},
+  { "q":"Dla jakiego prądu znamionowego najczęściej stosuje się wyłączniki nadprądowe B16 w gniazdach 230 V?",
+    "a":[{"t":"16 A","ok":true,"e":"B16 oznacza prąd znamionowy 16 A i charakterystykę B."},
+         {"t":"10 A","ok":false,"e":"B10 stosuje się częściej do oświetlenia."},
+         {"t":"20 A","ok":false,"e":"B20 do obwodów o większym obciążeniu."}]},
+  { "q":"Minimalny przekrój przewodu miedzianego dla obwodu gniazd 230 V (układ TN), prowadzony w tynku?",
+    "a":[{"t":"1,0 mm²","ok":false,"e":"Zbyt mały dla gniazd – typowo dla oświetlenia (w PL częściej 1,5 mm²)."},
+         {"t":"2,5 mm²","ok":true,"e":"Standard dla obwodów gniazdowych – 2,5 mm² Cu."},
+         {"t":"4,0 mm²","ok":false,"e":"4 mm² stosuje się rzadziej, np. dla większych obciążeń."}]},
+  { "q":"Kiedy należy wykonać pomiar pętli zwarcia Zs?",
+    "a":[{"t":"Tylko przy pierwszym uruchomieniu instalacji","ok":false,"e":"Nie tylko. Wykonuje się też okresowo oraz po zmianach/naprawach."},
+         {"t":"Podczas odbioru oraz okresowo w trakcie eksploatacji","ok":true,"e":"Pomiar Zs potwierdza skuteczność samoczynnego wyłączenia zasilania."},
+         {"t":"Nigdy, wystarczy pomiar rezystancji izolacji","ok":false,"e":"Oba pomiary są istotne i dotyczą innych aspektów bezpieczeństwa."}]},
+
+  { "q":"Charakterystyka C wyłącznika nadprądowego jest:",
+    "a":[{"t":"Wolniejsza na zwarcia niż B, wymaga wyższego prądu zadziałania","ok":true,"e":"C wyzwala przy prądach 5–10×In, odpowiednia dla obciążeń indukcyjnych."},
+         {"t":"Szybsza od B","ok":false,"e":"Jest mniej czuła na prądy rozruchowe (bardziej „odporna”)."},
+         {"t":"Taka sama jak D","ok":false,"e":"D wymaga jeszcze większego prądu zadziałania (10–20×In)."}]},
+
+  { "q":"Który z wymienionych jest środkiem ochrony podstawowej?",
+    "a":[{"t":"Izolacja części czynnych","ok":true,"e":"Ochrona podstawowa to m.in. izolacja, obudowy, osłony."},
+         {"t":"Połączenia wyrównawcze","ok":false,"e":"To element ochrony dodatkowej/przed porażeniem pośrednim."},
+         {"t":"Samoczynne wyłączenie zasilania","ok":false,"e":"To środek ochrony dodatkowej."}]},
+
+  { "q":"W instalacji PV na dachu budynku należy bezwzględnie stosować:",
+    "a":[{"t":"Wyłącznik różnicowoprądowy typu AC po stronie DC","ok":false,"e":"Po stronie DC stosuje się aparaturę DC; typ RCD dobiera się po stronie AC."},
+         {"t":"Rozłącznik/przełącznik DC przy generatorze PV","ok":true,"e":"Rozłącznik DC pozwala na bezpieczne odłączenie łańcuchów PV."},
+         {"t":"Zawsze uziom o rezystancji poniżej 1 Ω","ok":false,"e":"Wymagania zależą od projektu i norm; 1 Ω nie jest sztywną wartością normową."}]},
+
+  { "q":"Przewód neutralny (N) w instalacjach nN oznacza się:",
+    "a":[{"t":"Żółto-zielonym","ok":false,"e":"To przewód ochronny PE."},
+         {"t":"Niebieskim","ok":true,"e":"Niebieski jest zarezerwowany dla N."},
+         {"t":"Brązowym","ok":false,"e":"Brązowy to zwykle faza L."}]},
+
+  { "q":"Kto może wykonywać prace przy urządzeniach elektrycznych w zakresie eksploatacji (E)?",
+    "a":[{"t":"Wyłącznie osoby z uprawnieniami SEP E w odpowiednim zakresie","ok":true,"e":"Uprawnienia kwalifikacyjne są wymagane przez prawo."},
+         {"t":"Każda osoba po kursie BHP","ok":false,"e":"Kurs BHP nie zastępuje kwalifikacji E."},
+         {"t":"Tylko inspektorzy UDT","ok":false,"e":"UDT dotyczy urządzeń dozorowych, nie wszystkich prac eksploatacyjnych."}]},
+
+  { "q":"Pomiar rezystancji izolacji w instalacji 230/400 V Cu wykonuje się zwykle napięciem:",
+    "a":[{"t":"50 V DC","ok":false,"e":"Za niskie do oceny izolacji."},
+         {"t":"500 V DC","ok":true,"e":"Dla obwodów 230/400 V przyjmuje się zwykle 500 V DC."},
+         {"t":"5 kV DC","ok":false,"e":"5 kV DC stosuje się do kabli SN/WN lub specjalnych prób."}]},
+
+  { "q":"Jaki jest cel połączeń wyrównawczych głównych?",
+    "a":[{"t":"Zmniejszenie różnicy potencjałów między częściami przewodzącymi","ok":true,"e":"Ogranicza napięcia dotykowe w razie uszkodzeń."},
+         {"t":"Zwiększenie impedancji pętli zwarcia","ok":false,"e":"Dążymy do małej impedancji, by zadziałały zabezpieczenia."},
+         {"t":"Ochrona przed przepięciami łączeniowymi","ok":false,"e":"Za przepięcia odpowiada SPD."}]},
+
+  { "q":"Dopuszczalny spadek napięcia dla obwodów odbiorczych w budynkach mieszkalnych wg dobrych praktyk to:",
+    "a":[{"t":"≤ 3% od punktu rozdziału","ok":true,"e":"Często przyjmuje się 3% dla obwodów końcowych (sumarycznie ≤ 5%)."},
+         {"t":"≥ 10%","ok":false,"e":"Zbyt duży spadek – pogarsza pracę urządzeń."},
+         {"t":"0% – brak spadku","ok":false,"e":"W praktyce zawsze występuje pewien spadek."}]},
+
+  { "q":"W układzie TT ochrona przez samoczynne wyłączenie zasilania wymaga zwykle:",
+    "a":[{"t":"Stosowania RCD w obwodach","ok":true,"e":"W TT większa impedancja pętli zwarcia, stąd RCD."},
+         {"t":"Wyłącznie MCB o charakterystyce D","ok":false,"e":"Charakterystyka MCB nie rozwiązuje problemu Zs."},
+         {"t":"Braku uziomu przy odbiorcy","ok":false,"e":"TT wymaga własnego uziomu odbiorcy."}]},
+
+  { "q":"Który przewód można rozłączać wyłącznikiem jednobiegunowym w obwodzie 230 V?",
+    "a":[{"t":"N","ok":false,"e":"Nie rozłączamy samego N – wyłączamy tor fazowy L."},
+         {"t":"PE","ok":false,"e":"Przewodu ochronnego nie rozłącza się."},
+         {"t":"L","ok":true,"e":"Wyłącznik w torze fazowym."}]},
+
+  { "q":"Który typ SPD stosuje się najbliżej zacisku przyłączeniowego budynku (ochrona odgromowa)?",
+    "a":[{"t":"Typ 1 (T1)","ok":true,"e":"T1 przejmuje prądy udarowe od wyładowań atmosferycznych."},
+         {"t":"Typ 2 (T2) wyłącznie","ok":false,"e":"T2 zwykle po T1, w rozdzielnicach wewnętrznych."},
+         {"t":"Typ 3 (T3) tylko","ok":false,"e":"T3 blisko urządzeń – uzupełniająco."}]},
+
+  { "q":"Minimalna odległość pozioma kabli nN od przewodu gazowego prowadzonych równolegle (wspólna bruzda)?",
+    "a":[{"t":"≥ 10 cm","ok":true,"e":"Zalecane ≥ 10 cm (praktyka projektowa)."},
+         {"t":"0 cm – mogą się stykać","ok":false,"e":"Unikamy prowadzenia bez separacji."},
+         {"t":"≥ 50 cm","ok":false,"e":"Zwykle nie wymaga się aż 50 cm."}]},
+
+  { "q":"Jaki przekrój minimalny Cu dla przewodu ochronnego głównego (PE) w budynku mieszkalnym?",
+    "a":[{"t":"6 mm²","ok":true,"e":"Typowy przekrój minimalny dla GSW i połączeń głównych."},
+         {"t":"1,5 mm²","ok":false,"e":"Za mało dla połączeń głównych."},
+         {"t":"2,5 mm² bez warunków","ok":false,"e":"2,5 mm² bywa dopuszczalne jako dodatkowe, np. w osłonie."}]},
+
+  { "q":"Gdzie najczęściej umieszcza się rozdział przewodu PEN na PE i N w układzie TN-C-S?",
+    "a":[{"t":"W gnieździe końcowym","ok":false,"e":"Rozdział możliwie na początku instalacji."},
+         {"t":"W złączu/rozdzielnicy głównej budynku","ok":true,"e":"Tam też łączy się PE z uziomem."},
+         {"t":"W dowolnym miejscu","ok":false,"e":"Trzymamy się zasad projektowych i bezpieczeństwa."}]},
+
+  { "q":"Jakie oznaczenie ma przewód fazowy w kablu trójżyłowym do 230 V wg nowych kolorów?",
+    "a":[{"t":"Brązowy","ok":true,"e":"Brązowy – L; niebieski – N; żółto-zielony – PE."},
+         {"t":"Niebieski","ok":false,"e":"Niebieski to N."},
+         {"t":"Żółto-zielony","ok":false,"e":"To PE."}]},
+
+  { "q":"Jak sprawdzić selektywność zabezpieczeń nadprądowych?",
+    "a":[{"t":"Porównać charakterystyki czasowo-prądowe i prądy zwarciowe","ok":true,"e":"Analiza charakterystyk i poziomów zwarciowych."},
+         {"t":"Zawsze dać większe In upstream","ok":false,"e":"Samo większe In nie gwarantuje selektywności."},
+         {"t":"Nie da się","ok":false,"e":"Da się – z dokumentacji i obliczeń."}]},
+
+  { "q":"Jakie napięcie znamionowe ma standardowa instalacja jednofazowa w Polsce?",
+    "a":[{"t":"230/400 V","ok":false,"e":"To parametry dla sieci 3-f."},
+         {"t":"230 V","ok":true,"e":"Między L a N."},
+         {"t":"110 V","ok":false,"e":"Spotykane np. w USA/UK (plac budowy), nie standard w PL."}]},
+
+  { "q":"Prąd znamionowy RCD dla obwodu gniazd 1-fazowych najczęściej wynosi:",
+    "a":[{"t":"IΔn = 30 mA","ok":true,"e":"Standard ochrony uzupełniającej."},
+         {"t":"IΔn = 300 mA","ok":false,"e":"300 mA – ochrona przeciwpożarowa linii."},
+         {"t":"IΔn = 3 mA","ok":false,"e":"Za niska czułość."}]},
+
+  { "q":"Na jakiej wysokości zwykle montuje się gniazda 230 V w pokojach mieszkalnych (oś osprzętu)?",
+    "a":[{"t":"~30 cm od gotowej podłogi","ok":true,"e":"Praktyka montażowa (± kilka cm)."},
+         {"t":"~120 cm","ok":false,"e":"Tak wysoko raczej osprzęt specjalny."},
+         {"t":"~5 cm","ok":false,"e":"Za nisko – ryzyko zawilgocenia/uszkodzeń."}]},
+
+  { "q":"Czy przewód PEN można przerywać wyłącznikiem?",
+    "a":[{"t":"Tak, jeśli wygodnie","ok":false,"e":"PEN nie wolno przerywać."},
+         {"t":"Nie, PEN musi mieć ciągłość i właściwy przekrój","ok":true,"e":"Przerwanie PEN grozi napięciami na obudowach."},
+         {"t":"Tak, ale tylko przy RCD","ok":false,"e":"RCD nie rozłącza PEN."}]},
+
+  { "q":"W obwodzie oświetlenia LED 230 V jaki MCB dobierzesz najczęściej?",
+    "a":[{"t":"B10","ok":true,"e":"Często B10 (zależnie od mocy i przekroju)."},
+         {"t":"D32","ok":false,"e":"Zbyt duże i mało selektywne."},
+         {"t":"B6 zawsze","ok":false,"e":"Nie „zawsze” – zależy od projektu."}]},
+
+  { "q":"Do czego służy wyłącznik izolacyjny (rozłącznik główny) w rozdzielnicy?",
+    "a":[{"t":"Do zabezpieczenia przeciążeniowego","ok":false,"e":"Nie zapewnia ochrony nadprądowej."},
+         {"t":"Do bezpiecznego odłączenia całej rozdzielnicy","ok":true,"e":"Ułatwia serwis i bezpieczeństwo."},
+         {"t":"Do kompensacji mocy biernej","ok":false,"e":"Nie taka rola."}]},
+
+  { "q":"Falownik PV bez separacji galwanicznej wymaga zwykle RCD:",
+    "a":[{"t":"Typu AC","ok":false,"e":"Typ AC niezalecany przy możliwych upływach DC."},
+         {"t":"Typu A lub B – zgodnie z DTR","ok":true,"e":"Dobór wg producenta; często A, przy DC – B."},
+         {"t":"Żadnego","ok":false,"e":"Zabezpieczenia różnicowe często wymagane na AC."}]},
+
+  { "q":"Jaki miernik użyjesz do sprawdzenia kolejności faz?",
+    "a":[{"t":"Miernik kolejności faz","ok":true,"e":"Specjalizowany przyrząd lub funkcja testera instalacji."},
+         {"t":"Miernik cęgowy","ok":false,"e":"Nie do tego."},
+         {"t":"Omomierz","ok":false,"e":"Nie określi kolejności."}]},
+
+  { "q":"Jakie zabezpieczenie dla płyty indukcyjnej ~7,2 kW (3-f) 400 V?",
+    "a":[{"t":"MCB 3P B16, przewód 5×2,5 mm² (wg projektu)","ok":true,"e":"Popularne; zawsze weryfikuj DTR i obliczenia."},
+         {"t":"B6","ok":false,"e":"Za małe."},
+         {"t":"D32 zawsze","ok":false,"e":"Zbyt duże bez uzasadnienia."}]},
+
+  { "q":"W łazience gniazda 230 V należy montować:",
+    "a":[{"t":"Poza strefą 0,1,2 i przez RCD 30 mA","ok":true,"e":"Wymóg bezpieczeństwa w pomieszczeniach kąpielowych."},
+         {"t":"W strefie 1 nad wanną","ok":false,"e":"Niedopuszczalne."},
+         {"t":"Bez RCD, jeśli IP44","ok":false,"e":"IP nie zastępuje ochrony uzupełniającej."}]},
+
+  { "q":"Dla przewodu Cu 2,5 mm² w tynku prąd długotrwały orientacyjnie:",
+    "a":[{"t":"~20–25 A","ok":true,"e":"Zależnie od metody ułożenia – sprawdź tablice."},
+         {"t":"~50 A","ok":false,"e":"Za dużo jak na 2,5 mm² w tynku."},
+         {"t":"~10 A","ok":false,"e":"Zbyt konserwatywnie."}]},
+
+  { "q":"Czy w obwodach oświetlenia wymagany jest przewód ochronny?",
+    "a":[{"t":"Tak, co do zasady prowadzi się PE","ok":true,"e":"Dla opraw kl. I i uniwersalności instalacji."},
+         {"t":"Nie, bo LED to II klasa","ok":false,"e":"Nie wszystkie oprawy są II klasy."},
+         {"t":"Tylko w garażu","ok":false,"e":"Dotyczy całej instalacji."}]},
+
+  { "q":"Jakie napięcie dotykowe długotrwałe jest bezpieczne w warunkach normalnych?",
+    "a":[{"t":"≤ 50 V AC","ok":true,"e":"W warunkach normalnych przyjmuje się 50 V AC / 120 V DC."},
+         {"t":"≤ 110 V AC","ok":false,"e":"Za wysoko."},
+         {"t":"≤ 24 V AC","ok":false,"e":"Typowo dla warunków szczególnych (SELV/PELV)."}]},
+
+  { "q":"Kiedy sporządzić protokół z pomiarów powykonawczych?",
+    "a":[{"t":"Zawsze po zakończeniu nowej instalacji lub modernizacji","ok":true,"e":"Podstawa dopuszczenia do eksploatacji."},
+         {"t":"Nigdy – wystarczy oświadczenie","ok":false,"e":"Niewystarczające bez pomiarów."},
+         {"t":"Tylko w przemyśle","ok":false,"e":"Dotyczy także budownictwa mieszkaniowego."}]}
+];
+
+let order=[...Array(QUESTIONS.length).keys()];
+let state={i:0,score:0,answered:false};
+const qno=document.getElementById('qno'),qtext=document.getElementById('qtext'),answers=document.getElementById('answers'),
+      explain=document.getElementById('explain'),bar=document.getElementById('bar'),counter=document.getElementById('counter'),
+      scoreLabel=document.getElementById('scoreLabel'),nextBtn=document.getElementById('nextBtn'),restartBtn=document.getElementById('restartBtn');
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function renderQ(){const qi=order[state.i],q=QUESTIONS[qi];qno.textContent=state.i+1;qtext.textContent=q.q;counter.textContent=`Pytanie ${state.i+1}/${QUESTIONS.length}`;bar.style.width=`${(state.i/QUESTIONS.length)*100}%`;scoreLabel.textContent=`${state.score} pkt`;const opts=q.a.map((o,i)=>({i,...o}));shuffle(opts);answers.innerHTML=opts.map(o=>`<div class="ans" data-idx="${o.i}" role="button" tabindex="0">${o.t}</div>`).join("");explain.style.display="none";explain.innerHTML="";document.querySelectorAll('.ans').forEach(el=>{el.addEventListener('click',onAns);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();el.click();}});});state.answered=false;nextBtn.disabled=true;}
+function onAns(e){if(state.answered)return;state.answered=true;const idx=Number(e.currentTarget.getAttribute('data-idx')),qi=order[state.i],q=QUESTIONS[qi];document.querySelectorAll('.ans').forEach(el=>{const i=Number(el.getAttribute('data-idx'));const ok=q.a[i].ok;el.classList.add(ok?'correct':'wrong');el.style.cursor='default';});const chosen=q.a[idx],right=q.a.find(x=>x.ok);if(chosen.ok){state.score+=1;explain.innerHTML=`✅ <strong>Poprawnie.</strong> ${chosen.e||""}`;}else{explain.innerHTML=`❌ <strong>Niepoprawnie.</strong> ${chosen.e||""} <br>✔ Prawidłowa odpowiedź: <em>${right.t}</em>. ${right.e||""}`;}explain.style.display="block";nextBtn.disabled=false;bar.style.width=`${((state.i+1)/QUESTIONS.length)*100}%`;}
+function renderResult(){const total=QUESTIONS.length,pct=Math.round((state.score/total)*100),passed=state.score>=PASS;document.querySelector('section.card').innerHTML=`<div class="qhead"><div class="qno">✔</div><div class="qtext"><strong>Wynik testu</strong></div></div><div class="answers"></div><div class="explain" style="display:block"><h2 style="margin:.2rem 0 0; font-size:28px">${state.score}/${total} – ${pct}%</h2><p>${passed?"🎉 Zaliczone! Świetna robota.":"💡 Jeszcze trochę praktyki i będzie super."}</p><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px"><span class="pill"><strong>Próg:</strong> 80% (${PASS}/${total})</span><button class="btn" onclick="restart()">🔄 Rozpocznij ponownie</button></div></div>`;}
+function next(){if(!state.answered)return;if(state.i<QUESTIONS.length-1){state.i++;renderQ();}else{renderResult();}}
+function restart(){state={i:0,score:0,answered:false};renderQ();}
+nextBtn.addEventListener('click',next);restartBtn.addEventListener('click',restart);document.getElementById('shuffleBtn').addEventListener('click',()=>{shuffle(order);restart();});
+(function(){const y=new Date().getFullYear();document.getElementById('copyright').textContent=`© 2025–${y} PF-Smart Energy & AI Safety. Wszelkie prawa zastrzeżone.`;document.getElementById('legalBlock').innerHTML=`<div>Materiał szkoleniowy firmy <strong>PF-Smart Energy & AI Safety</strong>. Zabronione jest kopiowanie, modyfikowanie i dalsza dystrybucja bez pisemnej zgody właściciela praw.</div><ul style="margin-top:8px"><li>Znaki towarowe i logotypy należą do uprawnionych właścicieli.</li><li>Treści mają charakter szkoleniowy i nie zastępują dokumentacji technicznej ani norm PN/PN-EN.</li><li>Test działa lokalnie w przeglądarce i nie wysyła danych na serwer. Eksport wyników zapisuje plik na urządzeniu użytkownika.</li></ul>`;})();
+renderQ();
+</script>
+</body>
+</html>
